@@ -1,5 +1,34 @@
-// https://leetcode.com/problems/climbing-stairs
-// recursive TLE TS: O(n) SC: O(1)
+// https://leetcode.com/problems/simplify-path
+// faster versio with stringstream TS: O(n) SC: O(1)
+class Solution {
+public:
+    string simplifyPath(string path) {
+        string canonicalPath = "";
+        string word;
+        stack<string> stringsPath;
+        stringstream sStream(path);
+        while(getline(sStream, word, '/')){
+            if (word != "" && word != "."){
+                if (word != ".."){
+                    stringsPath.push(word);
+                }
+                else if (stringsPath.empty() == false){
+                    stringsPath.pop();
+                }
+            }
+            word = "";
+        }
+        while (stringsPath.empty() == false){
+            canonicalPath = "/" + stringsPath.top() + canonicalPath;
+            stringsPath.pop();
+        }
+        if (canonicalPath.empty() == true){
+            canonicalPath = "/";
+        }
+        return canonicalPath;
+    }
+};
+// TS: O(n) SC: O(1)
 class Solution {
 public:
     string simplifyPath(string path) {

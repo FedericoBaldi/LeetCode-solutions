@@ -3,11 +3,44 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
+        if (s2.size() < s1.size()){
+            return false;
+        }
+        vector<int> frequencies(26, 0);
+        for (int index = 0; index < s1.size(); index++){
+            frequencies[s1[index] - 'a']++;
+        }
+
+        int start = 0;
+        int stop;
+        for (stop = 0; stop < s2.size(); stop++){
+            frequencies[s2[stop] - 'a']--;
+            bool check = true;
+            for (int index = 0; index < frequencies.size(); index++){
+                if (frequencies[index] != 0){
+                    check = false;
+                    break;
+                }
+            }
+            if (check){
+                return true;
+            }
+            if (stop - start + 1 == s1.size()){
+                frequencies[s2[start] - 'a']++;
+                start++;
+            }
+        }
+        return false;
+    }
+};
+
+class Solution2 {
+public:
+    bool checkInclusion(string s1, string s2) {
         int indexLeft = 0;
         int indexRight = 0;
         for (int index = 0; index < s1.size(); ++index){
             counter[s1[index]]++;
-            cout << counter[s1[index]] << endl;
         }
         while (indexRight < s2.size()){
             if (indexRight - indexLeft + 1 > s1.size()){
